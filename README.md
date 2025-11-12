@@ -190,6 +190,53 @@ export async function getExpensiveData() {
 
 **Example:** `/products/use-cache`
 
+**🎯 Where to Use "use cache":**
+
+**✅ Perfect Use Cases:**
+
+- **Database queries** that don't change often (user profiles, settings)
+- **API calls** to external services with stable data
+- **File system operations** (reading config files, static assets)
+- **Expensive computations** (image processing, calculations)
+- **Static content generation** (markdown parsing, syntax highlighting)
+
+**❌ Don't Use For:**
+
+- **User-specific data** that varies per request
+- **Real-time data** that changes frequently
+- **Authentication-dependent** operations
+- **Side effects** (writing to database, sending emails)
+
+**💡 Real-World Examples:**
+
+```typescript
+// ✅ Good - Static configuration
+"use cache";
+export async function getAppConfig() {
+  return await fs.readFile("config.json", "utf-8");
+}
+
+// ✅ Good - Product catalog
+("use cache");
+export async function getProducts() {
+  return await db.products.findMany({ where: { active: true } });
+}
+
+// ❌ Bad - User-specific data
+("use cache");
+export async function getUserCart(userId: string) {
+  // Don't cache - this varies per user!
+  return await db.cart.findUnique({ where: { userId } });
+}
+
+// ✅ Good - Expensive computation
+("use cache");
+export async function generateSitemap() {
+  const pages = await getAllPages();
+  return generateXMLSitemap(pages); // Expensive operation
+}
+```
+
 ### Partial Pre-rendering (PPR) 🌟
 
 **The holy grail of performance**
@@ -309,6 +356,38 @@ export async function getUserProfile(id: string) {
 }
 ```
 
+**🔧 Advanced "use cache" Patterns:**
+
+```typescript
+// Pattern 1: Static data that rarely changes
+"use cache";
+export async function getCategories() {
+  console.log("Fetching categories..."); // Only runs once
+  return await db.categories.findMany();
+}
+
+// Pattern 2: Expensive transformations
+("use cache");
+export async function getProcessedMarkdown(slug: string) {
+  const content = await fs.readFile(`posts/${slug}.md`, "utf-8");
+  return await markdownProcessor.process(content); // Expensive!
+}
+
+// Pattern 3: External API calls
+("use cache");
+export async function getExchangeRates() {
+  const response = await fetch("https://api.exchange.com/rates");
+  return response.json(); // Cache API responses
+}
+```
+
+**⚡ Performance Benefits:**
+
+- Eliminates duplicate expensive operations
+- Reduces database load
+- Speeds up page generation
+- Works across your entire module automatically
+
 ## 🚨 Common Pitfalls & Solutions
 
 ### ISR Issues
@@ -363,6 +442,38 @@ const getUserData = cache(async (userId) => {
 const getPublicConfig = cache(async () => {
   // Safe to cache across requests
 });
+```
+
+### "use cache" Issues
+
+❌ **Don't:** Use with user-specific operations
+
+```typescript
+"use cache";
+export async function getUserDashboard(userId: string) {
+  // BAD! This will cache the first user's data for everyone
+  return await buildUserDashboard(userId);
+}
+```
+
+✅ **Do:** Use for shared, static operations
+
+```typescript
+"use cache";
+export async function getPublicSettings() {
+  // GOOD! Same for all users
+  return await db.settings.findFirst({ where: { public: true } });
+}
+```
+
+❌ **Don't:** Use with side effects
+
+```typescript
+"use cache";
+export async function sendWelcomeEmail(email: string) {
+  // BAD! This is a side effect, not cacheable data
+  await emailService.send(email, "welcome");
+}
 ```
 
 ## 📊 Performance Decision Matrix
