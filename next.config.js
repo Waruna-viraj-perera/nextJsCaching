@@ -8,6 +8,8 @@ const nextConfig = {
     // Note: PPR is now enabled via cacheComponents
     cacheComponents: true,
   },
+  // Disable development indicators
+  devIndicators: false,
   // Different caching strategies
   images: {
     remotePatterns: [

@@ -216,6 +216,29 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* 'use cache' Demo */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-xl font-semibold mb-2 text-purple-600">
+          'use cache' Demo
+        </h2>
+        <p className="text-gray-600 mb-4">
+          New caching directive for function-level caching. Automatically caches
+          expensive operations.
+        </p>
+        <Link
+          href="/products/use-cache"
+          className="inline-block bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 mr-2"
+        >
+          View Demo
+        </Link>
+        <Link
+          href="/products/use-cache-profile"
+          className="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Profile Demo
+        </Link>
+      </div>
     </div>
   );
 }
