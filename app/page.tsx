@@ -79,6 +79,22 @@ export default function Home() {
             View Data Cache
           </Link>
         </div>
+        {/* Cache Tags Demo */}
+        <div className="card p-6 border-2 border-indigo-200">
+          <h2 className="text-2xl font-semibold mb-4 text-primary-600">
+            Cache Tags Demo
+          </h2>
+          <p className="text-gray-600 mb-4">
+            <span className="bg-indigo-100 px-2 py-1 rounded text-sm font-semibold">
+              POWERFUL
+            </span>{" "}
+            Selective cache revalidation using tags. Click buttons to see
+            targeted updates!
+          </p>
+          <Link href="/products/cache-tags" className="btn btn-primary">
+            View Cache Tags Demo
+          </Link>
+        </div>
 
         {/* 'use cache' Directive */}
         <div className="card p-6 border-2 border-primary-200">

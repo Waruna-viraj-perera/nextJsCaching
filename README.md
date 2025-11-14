@@ -365,3 +365,136 @@ module.exports = nextConfig;
 1. **Start with ISR** - `/products/isr` (most practical)
 2. **Explore PPR** - `/products/ppr` (future-proof)
 3. **Master 'use cache'** - `/products/use-cache-profile` (performance boost)
+
+---
+
+# Next.js Caching Demo
+
+A comprehensive demonstration of different caching strategies available in Next.js, including the latest features from Next.js 15+ and **Cache Tags** from Next.js 16.
+
+## 🏷️ **NEW: Cache Tags (Next.js 16)**
+
+**Cache Tags** are the newest and most powerful caching feature in Next.js 16, providing selective cache invalidation with surgical precision.
+
+### 🚀 **Interactive Demo: `/products/cache-tags`**
+
+**What makes Cache Tags special:**
+
+- ✅ **Selective Invalidation** - Update only specific caches, not everything
+- ✅ **Multi-Tag Support** - One cache can belong to multiple tag groups
+- ✅ **Performance Gains** - No unnecessary cache rebuilds
+- ✅ **Real-World Ready** - Perfect for user data, inventory, content management
+
+**Live demonstration:**
+
+- 🔵 **User Cache** - Tagged with `['users']`
+- 🟢 **Product Cache** - Tagged with `['products']`
+- 🟣 **Shared Cache** - Tagged with `['users', 'products']` (responds to both!)
+
+**Try it yourself:**
+
+1. Visit `/products/cache-tags` and note the random data
+2. Click "Revalidate 'users' Tag" → Only user + shared caches update
+3. Click "Revalidate 'products' Tag" → Only product + shared caches update
+4. Watch selective invalidation in real-time!
+
+### 💡 **Cache Tags Code Example:**
+
+```typescript
+import { unstable_cache, revalidateTag } from "next/cache";
+
+// User cache with 'users' tag
+const getUserData = unstable_cache(
+  async () => await fetchUser(),
+  ["user-cache"],
+  { tags: ["users"] }
+);
+
+// Product cache with 'products' tag
+const getProductData = unstable_cache(
+  async () => await fetchProducts(),
+  ["product-cache"],
+  { tags: ["products"] }
+);
+
+// Shared cache with BOTH tags
+const getSharedData = unstable_cache(
+  async () => await fetchSharedInfo(),
+  ["shared-cache"],
+  { tags: ["users", "products"] } // Updates with either tag!
+);
+
+// Selective revalidation
+revalidateTag("users"); // Updates user + shared caches only
+revalidateTag("products"); // Updates product + shared caches only
+```
+
+---
+
+## 🚀 Features Demonstrated
+
+### 🌟 **Latest Next.js 16 Features**
+
+- **🏷️ Cache Tags** - Selective cache invalidation (NEW!)
+
+### Advanced Caching Features
+
+- **'use cache' Directive** - Next.js 15+ automatic module-level caching
+- **Partial Prerendering (PPR)** - Experimental static shell with dynamic streaming
+- **Data Cache** - Function-level caching to prevent duplicate fetches
+
+### Core Caching Strategies
+
+- **Static Site Generation (SSG)** - Pre-built at build time for maximum performance
+- **Server-Side Rendering (SSR)** - Generated on each request for always-fresh data
+- **Incremental Static Regeneration (ISR)** - Static with periodic updates (30s and 60s intervals)
+- **Client-Side Rendering (CSR)** - Browser-rendered for interactive experiences
+
+## 🏷️ **Cache Tags Best Practices (Next.js 16)**
+
+### ✅ **Recommended Patterns:**
+
+- **User-specific data**: `tags: ['users']`
+- **Product catalog**: `tags: ['products', 'catalog']`
+- **Shopping cart**: `tags: ['users', 'products']` (multi-tag)
+- **Inventory management**: `tags: ['inventory', 'products']`
+
+### 🎯 **When to Use Cache Tags:**
+
+- **E-commerce sites** - User profiles vs product data vs inventory
+- **Content platforms** - Articles vs comments vs user data
+- **Dashboards** - Different widgets with different update cycles
+- **Multi-tenant apps** - Tenant-specific vs shared data
+
+### 💡 **Cache Tags Tips:**
+
+- Use **descriptive tag names** (`users`, `products`, not `cache1`, `cache2`)
+- **Group related caches** with common tags for batch updates
+- **Combine tags** for shared dependencies (shopping cart needs both user + product data)
+- **Test selective invalidation** in development to ensure it works as expected
+
+### 🚀 **Performance Benefits:**
+
+- **Reduced server load** - Only regenerate what changed
+- **Faster updates** - No need to rebuild entire cache
+- **Better user experience** - Targeted updates feel more responsive
+- **Scalable architecture** - Cache grows intelligently with your app
+
+---
+
+## 🎯 **Start Your Journey**
+
+**New to Next.js caching?** Start with the basics:
+
+1. **Static Generation** (`/products/static`) - Understanding the foundation
+2. **ISR** (`/products/isr`) - Adding dynamic updates
+3. **Cache Tags** (`/products/cache-tags`) - Master the newest, most powerful feature
+
+**Cache Tags represent the evolution of caching in Next.js 16** - giving developers unprecedented control over cache invalidation with surgical precision.
+
+## 🔗 **Learn More**
+
+- [Next.js Caching Documentation](https://nextjs.org/docs/app/building-your-application/caching)
+- [unstable_cache API](https://nextjs.org/docs/app/api-reference/functions/unstable_cache)
+- [Cache Tags Guide](https://nextjs.org/docs/app/building-your-application/caching#cache-tags) (Next.js 16+)
+- [Incremental Static Regeneration](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#revalidating-data)
