@@ -368,11 +368,7 @@ module.exports = nextConfig;
 
 ---
 
-# Next.js Caching Demo
-
-A comprehensive demonstration of different caching strategies available in Next.js, including the latest features from Next.js 15+ and **Cache Tags** from Next.js 16.
-
-## 🏷️ **NEW: Cache Tags (Next.js 16)**
+# 🏷️ **NEW: Cache Tags (Next.js 16)**
 
 **Cache Tags** are the newest and most powerful caching feature in Next.js 16, providing selective cache invalidation with surgical precision.
 
