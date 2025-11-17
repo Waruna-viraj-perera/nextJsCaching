@@ -49,7 +49,7 @@ export default function Home() {
           <p className="text-gray-600 mb-4">
             Static with periodic updates. Best of both worlds.
           </p>
-          <Link href="/products/isr" className="btn btn-primary">
+          <Link href="/products/isr-fixed" className="btn btn-primary">
             View ISR (30s)
           </Link>
         </div>
@@ -62,7 +62,7 @@ export default function Home() {
           <p className="text-gray-600 mb-4">
             Longer revalidation period. Less server load, slightly older data.
           </p>
-          <Link href="/products/isr-1min" className="btn btn-primary">
+          <Link href="/products/isr-1min-fixed" className="btn btn-primary">
             View ISR (1min)
           </Link>
         </div>
@@ -93,6 +93,23 @@ export default function Home() {
           </p>
           <Link href="/products/cache-tags" className="btn btn-primary">
             View Cache Tags Demo
+          </Link>
+        </div>
+
+        {/* Cache Life Demo */}
+        <div className="card p-6 border-2 border-purple-200">
+          <h2 className="text-2xl font-semibold mb-4 text-primary-600">
+            Cache Life Demo
+          </h2>
+          <p className="text-gray-600 mb-4">
+            <span className="bg-purple-100 px-2 py-1 rounded text-sm font-semibold">
+              MEMORY
+            </span>{" "}
+            Control how long cached data stays in memory. Different lifetimes
+            for different needs!
+          </p>
+          <Link href="/products/cache-life" className="btn btn-primary">
+            View Cache Life Demo
           </Link>
         </div>
 
@@ -193,6 +210,20 @@ export default function Home() {
           </div>
           <div>
             <h3 className="text-xl font-semibold mb-4">
+              Cache Life{" "}
+              <span className="text-sm bg-purple-100 px-2 py-1 rounded">
+                MEMORY
+              </span>
+            </h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-600">
+              <li>Controls how long data stays in memory</li>
+              <li>Independent of data revalidation timing</li>
+              <li>Prevents memory overflow on servers</li>
+              <li>Different lifetimes for different data types</li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold mb-4">
               'use cache' Directive{" "}
               <span className="text-sm bg-yellow-100 px-2 py-1 rounded">
                 NEW
@@ -231,29 +262,6 @@ export default function Home() {
             </ul>
           </div>
         </div>
-      </div>
-
-      {/* 'use cache' Demo */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold mb-2 text-purple-600">
-          'use cache' Demo
-        </h2>
-        <p className="text-gray-600 mb-4">
-          New caching directive for function-level caching. Automatically caches
-          expensive operations.
-        </p>
-        <Link
-          href="/products/use-cache"
-          className="inline-block bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 mr-2"
-        >
-          View Demo
-        </Link>
-        <Link
-          href="/products/use-cache-profile"
-          className="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-        >
-          Profile Demo
-        </Link>
       </div>
     </div>
   );

@@ -394,6 +394,26 @@ module.exports = nextConfig;
 3. Click "Revalidate 'products' Tag" → Only product + shared caches update
 4. Watch selective invalidation in real-time!
 
+### Cache Life Demo: `/products/cache-life`
+
+**New in Next.js 16:** Control how long cached data stays in memory before eviction.
+
+**What you'll see:**
+
+- Short Cache Life (5 seconds) - Quickly evicted from memory
+- Medium Cache Life (30 seconds) - Balanced memory usage
+- Long Cache Life (5 minutes) - Stays in memory longest
+- Default Cache Life - System-optimized lifetime
+
+**Key insight:** Cache Life is about memory management, not data freshness. Even with long revalidation times, data can be evicted based on cache life settings.
+
+**How to test:**
+
+1. Visit the demo page and note the generation timestamps
+2. Click "Clear Short Cache" - Only that specific cache regenerates
+3. Click other buttons to test selective cache clearing
+4. Compare timestamps to understand cache vs memory behavior
+
 ### Cache Tags Code Example:
 
 ```typescript
@@ -448,6 +468,37 @@ revalidateTag("products"); // Updates product + shared caches only
 
 ## Cache Tags Best Practices (Next.js 16)
 
+## Cache Life Best Practices (Next.js 16)
+
+### Memory Management Strategies:
+
+- **Short Life (5s)** - Real-time data, user sessions, frequently changing content
+- **Medium Life (30s)** - API responses, computed data, moderately stable content
+- **Long Life (5m)** - Static content, configuration, very stable data
+- **Default Life** - Let Next.js optimize based on usage patterns
+
+### Cache Life vs Other Caching Concepts:
+
+```typescript
+// Cache Life controls memory, not freshness
+const getCachedData = unstable_cache(
+  async () => fetchExpensiveData(),
+  ["key"],
+  {
+    revalidate: 3600, // Data freshness: 1 hour
+    tags: ["data-tag"], // Selective invalidation
+    // cacheLife: 300      // Memory lifetime: 5 minutes (if supported)
+  }
+);
+```
+
+### When to Use Different Lifetimes:
+
+- **E-commerce sites** - User sessions (short), product data (medium), static content (long)
+- **Real-time apps** - Live data (short), aggregated stats (medium), config (long)
+- **Content platforms** - Comments (short), articles (medium), site settings (long)
+- **Dashboards** - Live metrics (short), computed reports (medium), templates (long)
+
 ### Recommended Patterns:
 
 - **User-specific data**: `tags: ['users']`
@@ -486,11 +537,12 @@ revalidateTag("products"); // Updates product + shared caches only
 2. **ISR** (`/products/isr`) - Adding dynamic updates
 3. **Cache Tags** (`/products/cache-tags`) - Master the newest, most powerful feature
 
-**Cache Tags represent the evolution of caching in Next.js 16** - giving developers unprecedented control over cache invalidation with surgical precision.
+**Cache Tags and Cache Life represent the evolution of caching in Next.js 16** - giving developers unprecedented control over both cache invalidation and memory management with surgical precision.
 
 ## Learn More
 
 - [Next.js Caching Documentation](https://nextjs.org/docs/app/building-your-application/caching)
 - [unstable_cache API](https://nextjs.org/docs/app/api-reference/functions/unstable_cache)
 - [Cache Tags Guide](https://nextjs.org/docs/app/building-your-application/caching#cache-tags) (Next.js 16+)
+- [Cache Life Management](https://nextjs.org/docs/app/building-your-application/caching#cache-life) (Next.js 16+)
 - [Incremental Static Regeneration](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#revalidating-data)

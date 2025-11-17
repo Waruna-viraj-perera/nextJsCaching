@@ -1,11 +1,15 @@
 import ProductCard from "@/components/ProductCard";
 import { fetchProducts } from "@/lib/products";
 
+import { headers } from "next/headers";
+
 // Server-Side Rendering - Generated on each request
-// This function forces the page to be rendered on each request
-export const dynamic = "force-dynamic";
+// Using headers() to make this component dynamic instead of export const dynamic
 
 export default async function SSRProductsPage() {
+  // Access headers to make this route dynamic (compatible with cacheComponents)
+  await headers();
+
   // This runs on every request
   const products = await fetchProducts(500); // Add delay to simulate database query
 

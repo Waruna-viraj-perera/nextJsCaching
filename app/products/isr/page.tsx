@@ -3,8 +3,7 @@ import ProductCard from "@/components/ProductCard";
 import { fetchProducts } from "@/lib/products";
 
 // Incremental Static Regeneration - Static with periodic updates
-// This page will be statically generated but will regenerate every 30 seconds when requested
-export const revalidate = 30; // Revalidate every 30 seconds
+// Using unstable_cache with revalidate instead of export const revalidate (compatible with cacheComponents)
 
 export default async function ISRProductsPage() {
   // This runs at build time and then every 30 seconds when requested

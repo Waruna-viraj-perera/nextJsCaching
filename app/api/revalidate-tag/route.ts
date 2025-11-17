@@ -14,14 +14,20 @@ export async function GET(request: NextRequest) {
 
   try {
     // Attempt to revalidate the specific tag
-    revalidateTag(tag);
+    revalidateTag(tag, "default");
 
     console.log(`✅ Cache tag '${tag}' revalidated successfully`);
 
+    // Determine redirect destination based on tag
+    let redirectPath = "/products/cache-tags"; // default
+
+    if (tag.includes("-life")) {
+      // Cache life demo tags
+      redirectPath = "/products/cache-life";
+    }
+
     // Create success response with redirect
-    const response = NextResponse.redirect(
-      new URL("/products/cache-tags", request.url)
-    );
+    const response = NextResponse.redirect(new URL(redirectPath, request.url));
 
     // Add cache headers to ensure this response isn't cached
     response.headers.set(
@@ -34,9 +40,13 @@ export async function GET(request: NextRequest) {
     console.error("❌ Error revalidating tag:", error);
 
     // On error, still redirect but log the issue
-    const response = NextResponse.redirect(
-      new URL("/products/cache-tags", request.url)
-    );
+    let redirectPath = "/products/cache-tags"; // default
+
+    if (tag && tag.includes("-life")) {
+      redirectPath = "/products/cache-life";
+    }
+
+    const response = NextResponse.redirect(new URL(redirectPath, request.url));
     response.headers.set(
       "Cache-Control",
       "no-cache, no-store, must-revalidate"
