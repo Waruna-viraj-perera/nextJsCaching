@@ -1,15 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Specify source directory for Next.js 16
+  // Next.js 16 configuration for advanced caching demos
   experimental: {
-    // Ensure Next.js looks in src directory
+    // Enable external ES modules support
     esmExternals: true,
-    // Enable 'use cache' directive and Partial Prerendering (PPR)
-    // Note: PPR is now enabled via cacheComponents
+    // Enable cache components - includes 'use cache' directive and PPR
     cacheComponents: true,
+    // Note: PPR is now included in cacheComponents, no need for separate ppr: true
+    // Enable cache life management (if available in your Next.js 16 version)
+    // cacheLife: true,
   },
-  // Disable development indicators
+  // Disable development indicators for cleaner demo experience
   devIndicators: false,
+
+  // Optimize for caching demos
+  poweredByHeader: false,
   // Different caching strategies
   images: {
     remotePatterns: [

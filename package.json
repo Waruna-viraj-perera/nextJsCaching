@@ -11,7 +11,7 @@
   "dependencies": {
     "@types/node": "^20.0.0",
     "autoprefixer": "^10.4.0",
-    "next": "^16.0.2-canary.14",
+    "next": "^16.0.3",
     "postcss": "^8.4.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
